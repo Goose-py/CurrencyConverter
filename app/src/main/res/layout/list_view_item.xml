@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".kotlin.CurrencyListActivity">
+
+
+    <TextView
+        android:id="@+id/currencyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:minWidth="100dp"
+        android:textSize="20sp"
+        android:textAlignment="center"
+
+        />
+    <TextView
+        android:id="@+id/exchangeRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        android:textSize="20sp"
+        android:textAlignment="viewEnd"
+        />
+</LinearLayout>

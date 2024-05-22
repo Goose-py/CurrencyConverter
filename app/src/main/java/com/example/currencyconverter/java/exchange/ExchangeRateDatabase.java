@@ -1,4 +1,4 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.java.exchange;
 
 import java.util.Arrays;
 import java.util.HashMap;

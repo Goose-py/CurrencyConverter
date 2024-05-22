@@ -1,4 +1,4 @@
-package com.example.currencyconverter
+package com.example.currencyconverter.kotlin
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,9 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.currencyconverter.R
+import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
+import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -30,12 +33,11 @@ class MainActivity : ComponentActivity() {
 
         val switchToCurrencyListButton : Button = findViewById(R.id.switchToCurrList)
 
-        val exchangeRateDatabaseObj = ExchangeRateDatabase()
+        val exchangeRateDatabaseObj =
+            ExchangeRateDatabase()
         val currencies: Array<String> = exchangeRateDatabaseObj.currencies
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencies)
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = CurrencyListAdapter(this, currencies.toList())
 
         spinner1.adapter = adapter
         spinner2.adapter = adapter
@@ -96,7 +98,6 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(this, CurrencyListActivity::class.java)
             startActivity(intent)
         }
-
 
     }
 
