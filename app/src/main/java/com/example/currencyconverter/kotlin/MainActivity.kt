@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val spinner1:Spinner = findViewById(R.id.spinner)
+        val spinner1:Spinner = findViewById(R.id.spinner1)
         val spinner2:Spinner = findViewById(R.id.spinner2)
 
         val amountView : EditText = findViewById(R.id.moneyAmountText)

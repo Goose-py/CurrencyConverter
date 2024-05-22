@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -29,7 +28,7 @@
             app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner1"
             android:layout_width="260dp"
             android:layout_height="48dp"
             android:layout_marginStart="20dp"
@@ -57,7 +56,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="72dp"
             app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner1" />
 
         <TextView
             android:id="@+id/textView4"
@@ -66,7 +65,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="28dp"
             android:text="To value in "
-            app:layout_constraintEnd_toStartOf="@+id/spinner"
+            app:layout_constraintEnd_toStartOf="@+id/spinner1"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moneyAmountText" />

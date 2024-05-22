@@ -14,7 +14,6 @@ import java.util.Locale
 class CurrencyListAdapter(private var context : Context, private var data : List<String>) : BaseAdapter() {
 
     private val exchangeRateDatabase = ExchangeRateDatabase()
-    private var dropDownViewResourceId = 0
 
     override fun getCount(): Int {
         return data.size

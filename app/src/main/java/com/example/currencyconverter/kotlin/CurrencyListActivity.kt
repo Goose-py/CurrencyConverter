@@ -1,7 +1,6 @@
 package com.example.currencyconverter.kotlin
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.activity.ComponentActivity
 import com.example.currencyconverter.R
