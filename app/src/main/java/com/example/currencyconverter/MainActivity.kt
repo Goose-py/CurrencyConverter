@@ -1,5 +1,6 @@
 package com.example.currencyconverter
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -26,6 +27,8 @@ class MainActivity : ComponentActivity() {
         val calcButton : Button = findViewById(R.id.calcButton)
 
         val resultView : TextView = findViewById(R.id.resultView)
+
+        val switchToCurrencyListButton : Button = findViewById(R.id.switchToCurrList)
 
         val exchangeRateDatabaseObj = ExchangeRateDatabase()
         val currencies: Array<String> = exchangeRateDatabaseObj.currencies
@@ -88,6 +91,12 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(applicationContext, "Amount of money cannot be empty!", Toast.LENGTH_SHORT).show()
             }
         }
+
+        switchToCurrencyListButton.setOnClickListener{
+            val intent = Intent(this, CurrencyListActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
