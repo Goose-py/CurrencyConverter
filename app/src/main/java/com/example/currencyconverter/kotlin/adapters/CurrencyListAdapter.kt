@@ -1,12 +1,15 @@
 package com.example.currencyconverter.kotlin.adapters
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import com.example.currencyconverter.R
 import android.widget.TextView
+import androidx.compose.ui.text.toLowerCase
 import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
 import java.util.Locale
 
@@ -36,6 +39,10 @@ class CurrencyListAdapter(private var context : Context, private var data : List
 
         val exchangeRate:TextView? = view?.findViewById(R.id.exchangeRate)
         exchangeRate?.text = String.format(Locale.GERMANY, "%.2f",exchangeRateDatabase.getExchangeRate(entry))
+
+        val flag: ImageView? = view?.findViewById(R.id.flag)
+        val imgResource = context.resources.getIdentifier("@drawable/flag_${currency?.text.toString().lowercase()}", "drawable", context.packageName)
+        flag?.setImageResource(imgResource)
 
 
         return view

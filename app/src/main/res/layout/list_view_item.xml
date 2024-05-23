@@ -7,23 +7,28 @@
     android:orientation="horizontal"
     tools:context=".kotlin.CurrencyListActivity">
 
+    <ImageView
+        android:id="@+id/flag"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        />
 
     <TextView
         android:id="@+id/currencyName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_weight="0"
         android:minWidth="100dp"
         android:textSize="20sp"
-        android:textAlignment="center"
+        android:gravity="center"
 
         />
     <TextView
         android:id="@+id/exchangeRate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:text="0.00"
         android:textSize="20sp"
-        android:textAlignment="viewEnd"
+        android:gravity="end|center"
         />
 </LinearLayout>
