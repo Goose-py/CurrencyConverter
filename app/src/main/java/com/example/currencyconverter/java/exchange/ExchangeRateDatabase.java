@@ -29,7 +29,6 @@ public class ExchangeRateDatabase {
             new ExchangeRate("CNY", "Beijing", 6.7324),
             new ExchangeRate("HKD", "Hong Kong", 8.4100),
             new ExchangeRate("IDR", "Jakarta", 14172.71),
-            new ExchangeRate("ILS", "Jerusalem", 4.3019),
             new ExchangeRate("INR", "New Delhi", 67.9180),
             new ExchangeRate("KRW", "Seoul", 1201.04),
             new ExchangeRate("MXN", "Mexico City", 16.5321),
