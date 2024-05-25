@@ -4,6 +4,7 @@
     <style name="Theme.CurrencyConverter" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary" type="color">@color/colorPrimary</item>
+        <item name="editModeColor" type="color">@color/editModeColor</item>
 
     </style>
 
