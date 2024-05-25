@@ -9,18 +9,21 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.widget.ShareActionProvider
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.MenuItemCompat
 import com.example.currencyconverter.R
 import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var shareActionProvider : ShareActionProvider
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -42,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         val currencies: Array<String> = exchangeRateDatabaseObj.currencies
 
         val adapter = CurrencyListAdapter(this, currencies.toList())
+
+
 
         spinner1.adapter = adapter
         spinner2.adapter = adapter
@@ -91,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             if(moneyAmount != null){
                 val result = exchangeRateDatabaseObj.convert(moneyAmount, currencyFrom.uppercase(), currencyTo.uppercase())
                 resultView.text = String.format(Locale.GERMANY,"%.2f", result)
+                setShareText("$moneyAmount ${currencyFrom.uppercase()} equals ${resultView.text} ${currencyTo.uppercase()}")
             }
             else{
                 Toast.makeText(applicationContext, "Amount of money cannot be empty!", Toast.LENGTH_SHORT).show()
@@ -103,6 +109,10 @@ class MainActivity : AppCompatActivity() {
         val inflater : MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
         menu?.getItem(0)?.title = applicationContext.getString(R.string.currency_list)
+
+        val shareItem : MenuItem = (menu?.findItem(R.id.action_share))!!
+        shareActionProvider = MenuItemCompat.getActionProvider(shareItem) as ShareActionProvider
+        setShareText(null)
         return true
     }
 
@@ -115,6 +125,15 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setShareText(text : String?){
+        val shareIntent : Intent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        if(text!=null){
+            shareIntent.putExtra(Intent.EXTRA_TEXT, text)
+        }
+        shareActionProvider.setShareIntent(shareIntent)
     }
 
 
