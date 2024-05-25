@@ -113,6 +113,11 @@ class MainActivity : AppCompatActivity() {
         val shareItem : MenuItem = (menu?.findItem(R.id.action_share))!!
         shareActionProvider = MenuItemCompat.getActionProvider(shareItem) as ShareActionProvider
         setShareText(null)
+
+        menu?.findItem(R.id.edit_mode)?.isVisible = false
+        menu?.findItem(R.id.confirm_button)?.isVisible = false
+        menu?.findItem(R.id.currListItem)?.isVisible = true
+        menu?.findItem(R.id.action_share)?.isVisible = true
         return true
     }
 

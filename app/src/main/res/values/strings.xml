@@ -6,4 +6,6 @@
     <string name="currency_list">Currency List</string>
     <string name="type_amount_here">Type amount here…</string>
     <string name="from_value_in">From value in</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
 </resources>

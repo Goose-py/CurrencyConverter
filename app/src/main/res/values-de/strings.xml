@@ -7,4 +7,6 @@
     <string name="currency_list">Währungsliste</string>
     <string name="type_amount_here">Betrag hier eingeben…</string>
     <string name="from_value_in">Von Wert in</string>
+    <string name="share">Teilen</string>
+    <string name="edit">Bearbeiten</string>
 </resources>

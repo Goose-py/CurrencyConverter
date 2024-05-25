@@ -6,7 +6,18 @@
         android:id="@+id/currListItem"
         android:title="@string/currency_list" />
 
-    <item android:id="@+id/action_share" android:title="Share"
+    <item android:id="@+id/action_share"
+        android:title="@string/share"
         app:showAsAction="ifRoom"
         app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider" />
+
+    <item android:id="@+id/edit_mode"
+        android:title="@string/edit"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+
+    <item android:id="@+id/confirm_button"
+        android:title="Confirm"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
 </menu>
