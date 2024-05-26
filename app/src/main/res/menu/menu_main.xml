@@ -6,6 +6,10 @@
         android:id="@+id/currListItem"
         android:title="@string/currency_list" />
 
+    <item
+        android:id="@+id/refreshRatesItem"
+        android:title="@string/refreshRates" />
+
     <item android:id="@+id/action_share"
         android:title="@string/share"
         app:showAsAction="ifRoom"
@@ -17,7 +21,7 @@
         android:visible="false" />
 
     <item android:id="@+id/confirm_button"
-        android:title="Confirm"
+        android:title="@string/confirm"
         app:showAsAction="ifRoom"
         android:visible="false"/>
 </menu>

@@ -9,4 +9,6 @@
     <string name="from_value_in">Von Wert in</string>
     <string name="share">Teilen</string>
     <string name="edit">Bearbeiten</string>
+    <string name="confirm">bestaetigen</string>
+    <string name="refreshRates">Raten aktualisieren</string>
 </resources>

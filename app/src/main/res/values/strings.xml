@@ -8,4 +8,6 @@
     <string name="from_value_in">From value in</string>
     <string name="share">Share</string>
     <string name="edit">Edit</string>
+    <string name="confirm">Confirm</string>
+    <string name="refreshRates">Refresh Rates</string>
 </resources>
