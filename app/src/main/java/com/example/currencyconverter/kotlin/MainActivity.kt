@@ -1,6 +1,7 @@
 package com.example.currencyconverter.kotlin
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -63,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         spinner1.adapter = adapter
         spinner2.adapter = adapter
 
-
         var currencyFrom = "EUR"
         var currencyTo = "EUR"
 
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                currencyTo = "EUR"
+                currencyTo= "EUR"
             }
         }
 
@@ -114,6 +114,40 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Amount of money cannot be empty!", Toast.LENGTH_SHORT).show()
             }
         }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val prefs = getPreferences(MODE_PRIVATE)
+        val editor = prefs.edit()
+        val spinner1 = findViewById<Spinner>(R.id.spinner1)
+        val spinner2 = findViewById<Spinner>(R.id.spinner2)
+        val editText = findViewById<EditText>(R.id.moneyAmountText)
+
+        editor.putInt("currencyFrom", spinner1.firstVisiblePosition)
+        editor.putInt("currencyTo", spinner2.firstVisiblePosition)
+        editor.putString("amount", editText.text.toString())
+        editor.apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val prefs = getPreferences(MODE_PRIVATE)
+
+        val spinner1 = findViewById<Spinner>(R.id.spinner1)
+        val spinner2 = findViewById<Spinner>(R.id.spinner2)
+        val editText = findViewById<EditText>(R.id.moneyAmountText)
+
+        val currencyFrom = prefs.getInt("currencyFrom", 0)
+        val currencyTo = prefs.getInt("currencyTo", 0)
+        val amount = prefs.getString("amount", null)
+
+        spinner1.setSelection(currencyFrom)
+        spinner2.setSelection(currencyTo)
+        editText.setText(amount)
+
 
     }
 
