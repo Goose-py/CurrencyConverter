@@ -21,7 +21,6 @@ public class ExchangeRateDatabase {
             new ExchangeRate("CHF", "Bern", 1.0439),
             new ExchangeRate("ISK", "Rejkjavic", 141.10),
             new ExchangeRate("NOK", "Oslo", 8.6545),
-            new ExchangeRate("HRK", "Zagreb", 7.6448),
             new ExchangeRate("TRY", "Ankara", 2.8265),
             new ExchangeRate("AUD", "Canberra", 1.4158),
             new ExchangeRate("BRL", "Brasilia", 3.5616),
