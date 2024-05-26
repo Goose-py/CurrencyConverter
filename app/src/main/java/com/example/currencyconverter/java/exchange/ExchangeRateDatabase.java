@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExchangeRateDatabase {
+public abstract class ExchangeRateDatabase {
     // Exchange rates to EURO - price for 1 Euro
      private final static ExchangeRate[] RATES = {
             new ExchangeRate("EUR", "Bruxelles", 1.0),

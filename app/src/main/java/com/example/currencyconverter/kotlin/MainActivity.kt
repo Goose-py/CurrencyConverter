@@ -8,7 +8,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.AdapterView
+import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.ShareActionProvider
@@ -17,23 +20,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.animation.core.animateDecay
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuItemCompat
+import androidx.core.view.children
 import com.example.currencyconverter.R
-import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
+import com.example.currencyconverter.kotlin.adapters.AdapterUtils
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
+import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
+import org.w3c.dom.Text
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var shareActionProvider : ShareActionProvider
-    private val client = OkHttpClient()
-    private val exchangeRateDatabaseObj = ExchangeRateDatabase()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         val resultView : TextView = findViewById(R.id.resultView)
 
-        val currencies: Array<String> = exchangeRateDatabaseObj.currencies
+        val currencies: Array<String> = ExchangeRateDatabaseSingleton.currencies
 
         val adapter = CurrencyListAdapter(this, currencies.toList())
 
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         calcButton.setOnClickListener{
             val moneyAmount : Double? = amountView.text.toString().toDoubleOrNull()
             if(moneyAmount != null){
-                val result = exchangeRateDatabaseObj.convert(moneyAmount, currencyFrom.uppercase(), currencyTo.uppercase())
+                val result = ExchangeRateDatabaseSingleton.convert(moneyAmount, currencyFrom.uppercase(), currencyTo.uppercase())
                 resultView.text = String.format(Locale.GERMANY,"%.2f", result)
                 setShareText("$moneyAmount ${currencyFrom.uppercase()} equals ${resultView.text} ${currencyTo.uppercase()}")
             }
@@ -140,27 +141,9 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.refreshRatesItem -> {
-                try {
-                    val request: Request =
-                        Request.Builder().url("https://www.floatrates.com/daily/eur.json").build()
-                    val response: Response = client.newCall(request).execute()
-                    val responseBody: String? = response.body?.string()
-                    val root = JSONObject(responseBody!!)
-                    val currencies = exchangeRateDatabaseObj.currencies
-                    for (i in currencies.indices) {
-                        val currency = root.getJSONObject(currencies[i])
-                        exchangeRateDatabaseObj.setExchangeRate(
-                            currency.getString("code").uppercase(),
-                            currency.getString("rate").toDouble()
-                        )
-                    }
-                }catch (exception : IOException){
-                    Log.e("Refresh Rates", "Can't query the database")
-                    exception.printStackTrace()
-                }catch (exception: JSONException){
-                    Log.e("Refresh Rates", "Error parsing JSON response")
-                    exception.printStackTrace()
-                }
+                ExchangeRateDatabaseSingleton.updateRates()
+                AdapterUtils.notifyAdaptersInView(findViewById(android.R.id.content))
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

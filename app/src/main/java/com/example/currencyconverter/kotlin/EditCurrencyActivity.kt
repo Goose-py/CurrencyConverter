@@ -11,10 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.currencyconverter.R
-import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
+import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
 
 class EditCurrencyActivity : AppCompatActivity() {
-    private val exchangeRateDatabaseObj = ExchangeRateDatabase()
 
     private lateinit var currentCurrency : String
     override fun onCreate(savedInstanceState: Bundle?){
@@ -32,7 +31,7 @@ class EditCurrencyActivity : AppCompatActivity() {
 
         flagImgView.setImageResource(flag)
         currentCurrencyView.text = currentCurrency
-        oldExchangeRateView.text = "${oldExchangeRateView.text}  ${exchangeRateDatabaseObj.getExchangeRate(currentCurrency?.uppercase())}"
+        oldExchangeRateView.text = "${oldExchangeRateView.text}  ${ExchangeRateDatabaseSingleton.getExchangeRate(currentCurrency?.uppercase())}"
 
     }
 
@@ -51,7 +50,7 @@ class EditCurrencyActivity : AppCompatActivity() {
                 val newExchangeRateView : EditText = findViewById(R.id.newExchangeRate)
                 val newExchangeRate = newExchangeRateView.text.toString()
                 if(newExchangeRate != ""){
-                    exchangeRateDatabaseObj.setExchangeRate(currentCurrency.uppercase(), newExchangeRateView.text.toString().toDouble())
+                    ExchangeRateDatabaseSingleton.setExchangeRate(currentCurrency.uppercase(), newExchangeRateView.text.toString().toDouble())
                 }else{
                     Toast.makeText(this, "Exchange rate not changed", Toast.LENGTH_SHORT)
                 }

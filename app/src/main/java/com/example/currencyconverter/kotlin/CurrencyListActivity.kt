@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.currencyconverter.R
 import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
+import com.example.currencyconverter.kotlin.adapters.AdapterUtils
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
+import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -23,7 +25,6 @@ import org.json.JSONObject
 import java.io.IOException
 
 class CurrencyListActivity : AppCompatActivity() {
-    private val exchangeRateDatabaseObj = ExchangeRateDatabase()
     private var editMode = false
     private lateinit var toolbar : Toolbar
     private var client = OkHttpClient()
@@ -38,17 +39,17 @@ class CurrencyListActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val data = exchangeRateDatabaseObj.currencies
+        val data = ExchangeRateDatabaseSingleton.currencies
         val listView = findViewById<ListView>(R.id.currency_list_view)
 
-         adapter = CurrencyListAdapter(this, data.toList())
+        adapter = CurrencyListAdapter(this, data.toList())
         listView.adapter = adapter
 
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val selectedEntry = adapter.getItem(position)
                 if(!editMode){
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=${exchangeRateDatabaseObj.getCapital(selectedEntry.toString())}"))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=${ExchangeRateDatabaseSingleton.getCapital(selectedEntry.toString())}"))
                     if(intent.resolveActivity(packageManager)!=null){
                         startActivity(intent)
                     }else{
@@ -89,29 +90,8 @@ class CurrencyListActivity : AppCompatActivity() {
                 true
             }
             R.id.refreshRatesItem -> {
-                try {
-                    val request: Request =
-                        Request.Builder().url("https://www.floatrates.com/daily/eur.json").build()
-                    val response: Response = client.newCall(request).execute()
-                    val responseBody: String? = response.body?.string()
-                    val root = JSONObject(responseBody!!)
-                    val currencies = exchangeRateDatabaseObj.currencies
-                    for (i in currencies.indices) {
-                        if(currencies[i] == "EUR" || currencies[i] == "HRK") continue
-                        val currency = root.getJSONObject(currencies[i].lowercase())
-                        exchangeRateDatabaseObj.setExchangeRate(
-                            currency.getString("code").uppercase(),
-                            currency.getString("rate").toDouble()
-                        )
-                    }
-                }catch (exception : IOException){
-                    Log.e("Refresh Rates", "Can't query the database")
-                    exception.printStackTrace()
-                }catch (exception: JSONException){
-                    Log.e("Refresh Rates", "Error parsing JSON response")
-                    exception.printStackTrace()
-                }
-                adapter.notifyDataSetChanged()
+                ExchangeRateDatabaseSingleton.updateRates()
+                AdapterUtils.notifyAdaptersInView(findViewById(android.R.id.content))
                 true
             }
             else->onOptionsItemSelected(item)
