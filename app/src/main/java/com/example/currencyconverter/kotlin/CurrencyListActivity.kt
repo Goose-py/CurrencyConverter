@@ -3,8 +3,6 @@ package com.example.currencyconverter.kotlin
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.StrictMode
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
@@ -13,28 +11,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.currencyconverter.R
-import com.example.currencyconverter.java.exchange.ExchangeRateDatabase
 import com.example.currencyconverter.kotlin.adapters.AdapterUtils
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
+import com.example.currencyconverter.kotlin.singleton.runnables.CurrencyUpdateRunnableSingleton
 import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
 
 class CurrencyListActivity : AppCompatActivity() {
     private var editMode = false
     private lateinit var toolbar : Toolbar
-    private var client = OkHttpClient()
     private lateinit var adapter : CurrencyListAdapter
+    private val updateRatesRunnable = CurrencyUpdateRunnableSingleton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_currency_list)
-
-        val policy : StrictMode.ThreadPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -90,7 +79,7 @@ class CurrencyListActivity : AppCompatActivity() {
                 true
             }
             R.id.refreshRatesItem -> {
-                ExchangeRateDatabaseSingleton.updateRates()
+                updateRatesRunnable.start()
                 AdapterUtils.notifyAdaptersInView(findViewById(android.R.id.content))
                 true
             }

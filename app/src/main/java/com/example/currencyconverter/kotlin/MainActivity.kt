@@ -1,18 +1,13 @@
 package com.example.currencyconverter.kotlin
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.AdapterView
-import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.ShareActionProvider
@@ -21,21 +16,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.compose.animation.core.animateDecay
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuItemCompat
-import androidx.core.view.children
 import com.example.currencyconverter.R
 import com.example.currencyconverter.kotlin.adapters.AdapterUtils
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
+import com.example.currencyconverter.kotlin.singleton.runnables.CurrencyUpdateRunnableSingleton
 import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
-import okhttp3.OkHttpClient
-import org.w3c.dom.Text
+import com.example.currencyconverter.kotlin.singleton.UpdateRatesThreadManagerSingleton
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var shareActionProvider : ShareActionProvider
+    private val updateRatesRunnable = CurrencyUpdateRunnableSingleton
+    private lateinit var updateRatesThread : Thread
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -59,6 +53,9 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = CurrencyListAdapter(this, currencies.toList())
 
+        updateRatesThread = Thread(updateRatesRunnable)
+        updateRatesThread.start()
+        UpdateRatesThreadManagerSingleton.setThread(updateRatesThread)
 
 
         spinner1.adapter = adapter
@@ -175,7 +172,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.refreshRatesItem -> {
-                ExchangeRateDatabaseSingleton.updateRates()
+                updateRatesRunnable.start()
                 AdapterUtils.notifyAdaptersInView(findViewById(android.R.id.content))
 
                 true

@@ -39,6 +39,5 @@ object ExchangeRateDatabaseSingleton : ExchangeRateDatabase() {
             Log.e("Refresh Rates", "Error parsing JSON response")
             exception.printStackTrace()
         }
-
     }
 }
