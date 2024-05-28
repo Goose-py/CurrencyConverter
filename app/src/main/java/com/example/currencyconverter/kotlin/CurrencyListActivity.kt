@@ -79,8 +79,10 @@ class CurrencyListActivity : AppCompatActivity() {
                 true
             }
             R.id.refreshRatesItem -> {
+                Toast.makeText(this, "Updating rates started!", Toast.LENGTH_SHORT).show()
                 updateRatesRunnable.start()
                 AdapterUtils.notifyAdaptersInView(findViewById(android.R.id.content))
+                Toast.makeText(this, "Updating rates finished!", Toast.LENGTH_SHORT).show()
                 true
             }
             else->onOptionsItemSelected(item)
