@@ -18,6 +18,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.currencyconverter.R
 import com.example.currencyconverter.kotlin.adapters.AdapterUtils
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
@@ -25,7 +29,9 @@ import com.example.currencyconverter.kotlin.db.ExchangeRateDbHelper
 import com.example.currencyconverter.kotlin.singleton.runnables.CurrencyUpdateRunnableSingleton
 import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
 import com.example.currencyconverter.kotlin.singleton.UpdateRatesThreadManagerSingleton
+import com.example.currencyconverter.kotlin.worker.DailyUpdateWorker
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -116,6 +122,19 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Amount of money cannot be empty!", Toast.LENGTH_SHORT).show()
             }
         }
+
+        scheduleDailyUpdate()
+
+    }
+
+    private fun scheduleDailyUpdate() {
+        val dailyUpdateRequest = PeriodicWorkRequest.Builder(DailyUpdateWorker::class.java, 15, TimeUnit.MINUTES).build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "DailyUpdater",
+            ExistingPeriodicWorkPolicy.KEEP,
+            dailyUpdateRequest
+        )
 
     }
 
