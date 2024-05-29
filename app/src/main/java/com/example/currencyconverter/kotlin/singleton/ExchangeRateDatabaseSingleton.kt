@@ -31,6 +31,7 @@ object ExchangeRateDatabaseSingleton : ExchangeRateDatabase() {
                     currency.getString("code").uppercase(),
                     currency.getString("rate").toDouble()
                 )
+
             }
         }catch (exception : IOException){
             Log.e("Refresh Rates", "Can't query the database")

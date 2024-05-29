@@ -55,7 +55,7 @@ public abstract class ExchangeRateDatabase {
     }
 
     /**
-     * @return List of currency names
+     * @return Array of currency names
      */
     public String[] getCurrencies() {
         return CURRENCIES_LIST;
@@ -76,7 +76,7 @@ public abstract class ExchangeRateDatabase {
      * @param exchangeRate Exchange rate for one euro
      */
     public void setExchangeRate(String currency, double exchangeRate) {
-        CURRENCIES_MAP.get(currency).setRateForOneEuro(exchangeRate);
+            CURRENCIES_MAP.get(currency).setRateForOneEuro(exchangeRate);
     }
 
     /**

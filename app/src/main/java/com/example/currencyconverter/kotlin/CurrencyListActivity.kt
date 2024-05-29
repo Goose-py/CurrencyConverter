@@ -3,6 +3,7 @@ package com.example.currencyconverter.kotlin
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import com.example.currencyconverter.R
 import com.example.currencyconverter.kotlin.adapters.AdapterUtils
 import com.example.currencyconverter.kotlin.adapters.CurrencyListAdapter
+import com.example.currencyconverter.kotlin.db.ExchangeRateDbHelper
 import com.example.currencyconverter.kotlin.singleton.runnables.CurrencyUpdateRunnableSingleton
 import com.example.currencyconverter.kotlin.singleton.ExchangeRateDatabaseSingleton
 
@@ -21,6 +23,7 @@ class CurrencyListActivity : AppCompatActivity() {
     private lateinit var toolbar : Toolbar
     private lateinit var adapter : CurrencyListAdapter
     private val updateRatesRunnable = CurrencyUpdateRunnableSingleton
+    private lateinit var dbHelper : ExchangeRateDbHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_currency_list)
@@ -30,6 +33,8 @@ class CurrencyListActivity : AppCompatActivity() {
 
         val data = ExchangeRateDatabaseSingleton.currencies
         val listView = findViewById<ListView>(R.id.currency_list_view)
+
+        dbHelper = ExchangeRateDbHelper(this)
 
         adapter = CurrencyListAdapter(this, data.toList())
         listView.adapter = adapter
@@ -81,6 +86,14 @@ class CurrencyListActivity : AppCompatActivity() {
             R.id.refreshRatesItem -> {
                 Toast.makeText(this, "Updating rates started!", Toast.LENGTH_SHORT).show()
                 updateRatesRunnable.start()
+                for(i in 0 until ExchangeRateDatabaseSingleton.currencies.size){
+                    val currentCurrency = ExchangeRateDatabaseSingleton.currencies[i]
+                    val er = ExchangeRateDatabaseSingleton.getExchangeRate(currentCurrency)
+                    val updated = dbHelper.updateExchangeRate(currentCurrency, er)
+                    if(updated){
+                        Log.i("DATABASE UPDATE", "Updated exchange rate for $currentCurrency to $er")
+                    }
+                }
                 AdapterUtils.notifyAdaptersInView(findViewById(android.R.id.content))
                 Toast.makeText(this, "Updating rates finished!", Toast.LENGTH_SHORT).show()
                 true
